@@ -47,3 +47,10 @@ export const step3Schema = z.object({
   aadhaarNumber: z.string()
     .regex(/^\d{12}$/, 'Aadhaar number must be exactly 12 digits long'),
 });
+// --- Step 4: Address Information ---
+export const step4Schema = z.object({
+  pinCode: z.string()
+    .regex(/^[0-9]{6}$/, 'PIN Code must be exactly 6 digits'),
+  city: z.string().min(2, 'City is required'),
+  state: z.string().min(2, 'State is required'),
+});
