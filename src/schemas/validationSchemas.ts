@@ -33,11 +33,11 @@ export const step2Schema = z.object({
 // --- Step 3: Identity Verification (KYC) ---
 export const step3Schema = z.object({
   panNumber: z.string()
-    .toUpperCase()
-    .regex(
-      /^[A-Z]{3}[PCHABGJLFT][A-Z][0-9]{4}[A-Z]$/, 
-      'PAN 4th character must indicate entity type'
-    ),
+  .toUpperCase()
+  .regex(
+    /^[A-Z]{3}[PCHABGJLFT][A-Z][0-9]{4}[A-Z]$/, 
+    'PAN 4th character must indicate entity type (P for Individual, C for Company, etc.)'
+  ),
   aadhaarNumber: z.string()
     .regex(/^\d{12}$/, 'Aadhaar number must be exactly 12 digits long'),
 });
@@ -73,10 +73,18 @@ export const step6Schema = z.object({
   message: "Valid PAN format required (e.g., ABCDE1234F)", 
   path: ["coApplicantPan"]
 });
+
 // --- Step 7: Documents & E-Signature ---
 export const step7Schema = z.object({
   documentsUploaded: z.boolean().refine((val) => val === true, {
     message: "Please upload your required documents",
   }),
   signature: z.string().min(20, "Please provide your e-signature"),
+});
+
+// --- Step 8: Review & Submission ---
+export const step8Schema = z.object({
+  termsAccepted: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms and conditions to submit",
+  }),
 });
