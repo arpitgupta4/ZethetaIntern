@@ -3,48 +3,41 @@ import { FormProvider, useFormContext } from './context/FormContext';
 import { useAutoSave } from './hooks/useAutoSave';
 import { Stepper } from './components/layout/Stepper';
 
+// Import our new forms!
+import { Step1LoanDetails } from './components/forms/Step1LoanDetails';
+import { Step2PersonalInfo } from './components/forms/Step2PersonalInfo';
+
 const FormOrchestrator = () => {
-  const { formData, updateFormData, currentStep, nextStep, prevStep } = useFormContext();
-  
-  // Initialize Auto-Save
+  const { formData, updateFormData, currentStep } = useFormContext();
   useAutoSave(formData, updateFormData);
+
+  // Dynamic rendering function based on current step
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1: return <Step1LoanDetails />;
+      case 2: return <Step2PersonalInfo />;
+      default: return (
+        <div className="text-center py-10">
+          <p className="text-gray-500 font-medium">Form for Step {currentStep} coming soon...</p>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-xl p-8">
         
-        {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-extrabold text-gray-900">LendSwift</h1>
           <p className="text-gray-500 mt-2">Digital Loan Application</p>
         </div>
 
-        {/* Dynamic Stepper */}
         <Stepper />
         
-        {/* Step Content Area (Placeholder for now) */}
-        <div className="min-h-[400px] border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center mb-8 bg-gray-50">
-          <p className="text-gray-500 font-medium text-lg">
-            Form for Step {currentStep} will render here.
-          </p>
-        </div>
-
-        {/* Temporary Navigation Controls */}
-        <div className="flex justify-between mt-8 pt-4 border-t border-gray-100">
-          <button 
-            onClick={prevStep}
-            disabled={currentStep === 1}
-            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            Previous
-          </button>
-          <button 
-            onClick={nextStep}
-            disabled={currentStep === 8}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
-          >
-            Next Step
-          </button>
+        {/* Render the active form here */}
+        <div className="mt-8 bg-gray-50 p-6 rounded-xl border border-gray-100">
+          {renderStepContent()}
         </div>
 
       </div>
