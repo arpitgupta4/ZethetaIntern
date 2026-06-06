@@ -9,7 +9,8 @@ import { Step2PersonalInfo } from './components/forms/Step2PersonalInfo';
 import { Step3KYC } from './components/forms/Step3KYC';
 import { Step4Address } from './components/forms/Step4Address';
 import { Step5Employment } from './components/forms/Step5Employment'; 
-
+import { Step6CoApplicant } from './components/forms/Step6CoApplicant'; 
+import { Step7Documents } from './components/forms/Step7Documents'; 
 const FormOrchestrator = () => {
   const { formData, updateFormData, currentStep } = useFormContext();
   useAutoSave(formData, updateFormData);
@@ -21,6 +22,8 @@ const FormOrchestrator = () => {
       case 3: return <Step3KYC />;
       case 4: return <Step4Address />;
       case 5: return <Step5Employment />; 
+      case 6: return <Step6CoApplicant />; 
+      case 7: return <Step7Documents />;
       default: return (
         <div className="text-center py-10">
           <p className="text-gray-500 font-medium">Step {currentStep} coming soon...</p>

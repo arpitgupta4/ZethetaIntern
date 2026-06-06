@@ -58,3 +58,25 @@ export const step5Schema = z.object({
   companyName: z.string().optional(),
   businessVintage: z.coerce.number({ invalid_type_error: 'Vintage must be a number' }).optional(),
 });
+
+// --- Step 6: Co-Applicant ---
+export const step6Schema = z.object({
+  hasCoApplicant: z.boolean().default(false),
+  coApplicantName: z.string().optional(),
+  coApplicantPan: z.string().toUpperCase().optional(),
+})
+.refine((data) => !data.hasCoApplicant || (data.coApplicantName && data.coApplicantName.length >= 3), {
+  message: "Name must be at least 3 characters", 
+  path: ["coApplicantName"]
+})
+.refine((data) => !data.hasCoApplicant || (data.coApplicantPan && /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(data.coApplicantPan)), {
+  message: "Valid PAN format required (e.g., ABCDE1234F)", 
+  path: ["coApplicantPan"]
+});
+// --- Step 7: Documents & E-Signature ---
+export const step7Schema = z.object({
+  documentsUploaded: z.boolean().refine((val) => val === true, {
+    message: "Please upload your required documents",
+  }),
+  signature: z.string().min(20, "Please provide your e-signature"),
+});
