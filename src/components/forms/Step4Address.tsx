@@ -11,7 +11,6 @@ type Step4Data = {
   state: string;
 };
 
-// Simulated Database of PIN Codes
 const mockPinDatabase: Record<string, { city: string; state: string }> = {
   '110001': { city: 'New Delhi', state: 'Delhi' },
   '400001': { city: 'Mumbai', state: 'Maharashtra' },
@@ -27,29 +26,26 @@ export const Step4Address: React.FC = () => {
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<Step4Data>({
     resolver: zodResolver(step4Schema),
     defaultValues: {
-      pinCode: formData.pinCode || '',
-      city: formData.city || '',
-      state: formData.state || '',
+      pinCode: formData?.pinCode || '',
+      city: formData?.city || '',
+      state: formData?.state || '',
     },
   });
 
   const pinValue = watch('pinCode');
 
-  // Watch for 6-digit PIN code to trigger auto-lookup
   useEffect(() => {
     const fetchLocation = async () => {
       if (pinValue?.length === 6) {
         setIsLookingUp(true);
         
-        // Simulate network latency (800ms)
-        await new Promise(resolve => setTimeout(resolve, 800));
+        await new Promise((resolve) => setTimeout(resolve, 800));
         
         const location = mockPinDatabase[pinValue];
         if (location) {
           setValue('city', location.city, { shouldValidate: true });
           setValue('state', location.state, { shouldValidate: true });
         } else {
-          // If PIN not found in our mock DB, clear the fields
           setValue('city', '');
           setValue('state', '');
         }
@@ -67,7 +63,6 @@ export const Step4Address: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full max-w-md mx-auto">
-      
       <div className="relative">
         <label className="block text-sm font-medium text-gray-700 mb-1">PIN Code</label>
         <div className="relative flex items-center">
@@ -91,7 +86,7 @@ export const Step4Address: React.FC = () => {
           <input 
             type="text" 
             {...register('city')} 
-            readOnly // Make read-only as it's auto-filled
+            readOnly
             className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none text-gray-600"
           />
           {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city.message}</p>}
@@ -102,7 +97,7 @@ export const Step4Address: React.FC = () => {
           <input 
             type="text" 
             {...register('state')} 
-            readOnly // Make read-only as it's auto-filled
+            readOnly
             className="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none text-gray-600"
           />
           {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state.message}</p>}

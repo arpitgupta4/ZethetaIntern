@@ -54,3 +54,14 @@ export const step4Schema = z.object({
   city: z.string().min(2, 'City is required'),
   state: z.string().min(2, 'State is required'),
 });
+// --- Step 5: Employment & Income Details ---
+export const step5Schema = z.object({
+  employmentType: z.enum(['Salaried', 'Self-Employed', 'Business']),
+  monthlyIncome: z.number().min(10000, 'Minimum income is 10,000'),
+  companyName: z.string().optional(),
+  businessVintage: z.number().optional(),
+}).refine((data) => {
+  if (data.employmentType === 'Salaried') return !!data.companyName;
+  if (data.employmentType !== 'Salaried') return !!data.businessVintage;
+  return true;
+}, { message: "Field is required", path: ["conditionalField"] });

@@ -16,9 +16,10 @@ export const Step1LoanDetails: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<Step1Data>({
     resolver: zodResolver(step1Schema),
     defaultValues: {
-      loanType: (formData.loanType as 'Personal' | 'Home' | 'Business') || 'Personal',
-      loanAmount: formData.loanAmount || undefined,
-      loanTenure: formData.loanTenure || undefined,
+      // Added the '?' after formData to prevent crashes if state is empty
+      loanType: (formData?.loanType as 'Personal' | 'Home' | 'Business') || 'Personal',
+      loanAmount: formData?.loanAmount || undefined,
+      loanTenure: formData?.loanTenure || undefined,
     },
   });
 
