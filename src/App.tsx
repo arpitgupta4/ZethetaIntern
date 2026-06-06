@@ -3,9 +3,11 @@ import { FormProvider, useFormContext } from './context/FormContext';
 import { useAutoSave } from './hooks/useAutoSave';
 import { Stepper } from './components/layout/Stepper';
 
+
 // Import our new forms!
 import { Step1LoanDetails } from './components/forms/Step1LoanDetails';
 import { Step2PersonalInfo } from './components/forms/Step2PersonalInfo';
+import { Step3KYC } from './components/forms/Step3KYC';
 
 const FormOrchestrator = () => {
   const { formData, updateFormData, currentStep } = useFormContext();
@@ -16,6 +18,7 @@ const FormOrchestrator = () => {
     switch (currentStep) {
       case 1: return <Step1LoanDetails />;
       case 2: return <Step2PersonalInfo />;
+      case 3: return <Step3KYC />; // <--- ADD THIS LINE
       default: return (
         <div className="text-center py-10">
           <p className="text-gray-500 font-medium">Form for Step {currentStep} coming soon...</p>
