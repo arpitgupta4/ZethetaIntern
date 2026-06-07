@@ -16,7 +16,7 @@ export const Step7Documents: React.FC = () => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<Step7Data>({
+  const { handleSubmit, setValue, formState: { errors } } = useForm<Step7Data>({
     resolver: zodResolver(step7Schema),
     defaultValues: {
       documentsUploaded: formData?.documentsUploaded || false,
@@ -100,12 +100,12 @@ export const Step7Documents: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 w-full max-w-md mx-auto animate-in fade-in">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-md mx-auto space-y-8 animate-in fade-in">
       
       {/* Document Upload Section */}
       <div>
-        <h2 className="text-lg font-bold text-gray-800 mb-3">1. Upload KYC Documents</h2>
-        <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-gray-50 transition relative">
+        <h2 className="mb-3 text-lg font-bold text-gray-800">1. Upload KYC Documents</h2>
+        <div className="relative p-6 text-center transition border-2 border-gray-300 border-dashed rounded-xl hover:bg-gray-50">
           <input 
             type="file" 
             accept=".pdf, image/jpeg, image/png"
@@ -116,29 +116,29 @@ export const Step7Documents: React.FC = () => {
             <div className="flex flex-col items-center text-green-600">
               <FileCheck size={40} className="mb-2" />
               <p className="font-medium">{fileName}</p>
-              <p className="text-xs text-gray-500 mt-1">Click to replace</p>
+              <p className="mt-1 text-xs text-gray-500">Click to replace</p>
             </div>
           ) : (
             <div className="flex flex-col items-center text-gray-500">
               <UploadCloud size={40} className="mb-2 text-blue-500" />
               <p className="font-medium">Drag & drop or click to upload</p>
-              <p className="text-xs mt-1">Supports PDF, JPG, PNG (Max 2MB)</p>
+              <p className="mt-1 text-xs">Supports PDF, JPG, PNG (Max 2MB)</p>
             </div>
           )}
         </div>
-        {errors.documentsUploaded && <p className="text-red-500 text-xs mt-2">{errors.documentsUploaded.message}</p>}
+        {errors.documentsUploaded && <p className="mt-2 text-xs text-red-500">{errors.documentsUploaded.message}</p>}
       </div>
 
       {/* E-Signature Section */}
       <div>
-        <div className="flex justify-between items-end mb-3">
+        <div className="flex items-end justify-between mb-3">
           <h2 className="text-lg font-bold text-gray-800">2. E-Signature</h2>
-          <button type="button" onClick={clearSignature} className="text-sm text-gray-500 hover:text-red-500 flex items-center gap-1 transition">
+          <button type="button" onClick={clearSignature} className="flex items-center gap-1 text-sm text-gray-500 transition hover:text-red-500">
             <Eraser size={14} /> Clear
           </button>
         </div>
         
-        <div className="border border-gray-300 rounded-xl overflow-hidden bg-white shadow-inner">
+        <div className="overflow-hidden bg-white border border-gray-300 shadow-inner rounded-xl">
           <canvas
             ref={canvasRef}
             width={400}
@@ -153,13 +153,13 @@ export const Step7Documents: React.FC = () => {
             onTouchEnd={stopDrawing}
           />
         </div>
-        <p className="text-xs text-gray-400 mt-2 text-center">Draw your signature inside the box above</p>
-        {errors.signature && <p className="text-red-500 text-xs mt-1 text-center">{errors.signature.message}</p>}
+        <p className="mt-2 text-xs text-center text-gray-400">Draw your signature inside the box above</p>
+        {errors.signature && <p className="mt-1 text-xs text-center text-red-500">{errors.signature.message}</p>}
       </div>
 
       <div className="flex gap-4 pt-4">
-        <button type="button" onClick={prevStep} className="w-1/3 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">Back</button>
-        <button type="submit" className="w-2/3 bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-colors shadow-md">Review Application</button>
+        <button type="button" onClick={prevStep} className="w-1/3 py-3 text-gray-700 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50">Back</button>
+        <button type="submit" className="w-2/3 py-3 font-semibold text-white transition-colors bg-blue-600 rounded-lg shadow-md hover:bg-blue-700">Review Application</button>
       </div>
     </form>
   );

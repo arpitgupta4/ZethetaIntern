@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormProvider, useFormContext } from './context/FormContext';
 import { useAutoSave } from './hooks/useAutoSave';
 import { Stepper } from './components/layout/Stepper';
@@ -13,9 +12,8 @@ import { Step6CoApplicant } from './components/forms/Step6CoApplicant';
 import { Step7Documents } from './components/forms/Step7Documents'; 
 import { Step8Review } from './components/forms/Step8Review'; 
 const FormOrchestrator = () => {
-  const { formData, updateFormData, currentStep } = useFormContext();
-  useAutoSave(formData, updateFormData);
-
+  const { formData, currentStep } = useFormContext();
+  useAutoSave(formData);
   const renderStepContent = () => {
     switch (currentStep) {
       case 1: return <Step1LoanDetails />;
@@ -27,19 +25,19 @@ const FormOrchestrator = () => {
       case 7: return <Step7Documents />;
       case 8: return <Step8Review />;
       default: return (
-        <div className="text-center py-10">
-          <p className="text-gray-500 font-medium">Step {currentStep} coming soon...</p>
+        <div className="py-10 text-center">
+          <p className="font-medium text-gray-500">Step {currentStep} coming soon...</p>
         </div>
       );
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl w-full bg-white rounded-2xl shadow-xl p-8">
-        <div className="text-center mb-8">
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-slate-50 sm:px-6 lg:px-8">
+      <div className="w-full max-w-4xl p-8 bg-white shadow-xl rounded-2xl">
+        <div className="mb-8 text-center">
           <h1 className="text-3xl font-extrabold text-gray-900">LendSwift</h1>
-          <p className="text-gray-500 mt-2">Digital Loan Application</p>
+          <p className="mt-2 text-gray-500">Digital Loan Application</p>
         </div>
         <Stepper />
         <div className="mt-8 bg-gray-50 p-6 rounded-xl border border-gray-100 min-h-[400px]">

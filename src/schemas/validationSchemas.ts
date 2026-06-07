@@ -2,15 +2,13 @@ import { z } from 'zod';
 
 // --- Step 1: Loan Details ---
 export const step1Schema = z.object({
-  loanType: z.enum(['Personal', 'Home', 'Business'], {
-    errorMap: () => ({ message: 'Please select a valid loan type' }),
-  }),
-  loanAmount: z.coerce.number({ invalid_type_error: 'Amount must be a valid number' })
+  loanType: z.enum(['Personal', 'Home', 'Business']),
+  loanAmount: z.preprocess((val) => Number(val), z.number()
     .min(10000, 'Minimum loan amount is ₹10,000')
-    .max(50000000, 'Maximum loan amount is ₹5,00,00,000'),
-  loanTenure: z.coerce.number({ invalid_type_error: 'Tenure must be a valid number' })
+    .max(50000000, 'Maximum loan amount is ₹5,00,00,000')),
+  loanTenure: z.preprocess((val) => Number(val), z.number()
     .min(6, 'Minimum tenure is 6 months')
-    .max(360, 'Maximum tenure is 360 months'),
+    .max(360, 'Maximum tenure is 360 months')),
 });
 
 // --- Step 2: Personal Information ---
@@ -53,10 +51,10 @@ export const step4Schema = z.object({
 // --- Step 5: Employment & Income ---
 export const step5Schema = z.object({
   employmentType: z.enum(['Salaried', 'Self-Employed', 'Business']),
-  monthlyIncome: z.coerce.number({ invalid_type_error: 'Income must be a valid number' })
+  monthlyIncome: z.coerce.number()
     .min(10000, 'Minimum income is ₹10,000'),
   companyName: z.string().optional(),
-  businessVintage: z.coerce.number({ invalid_type_error: 'Vintage must be a number' }).optional(),
+  businessVintage: z.coerce.number().optional(),
 });
 
 // --- Step 6: Co-Applicant ---
@@ -73,7 +71,6 @@ export const step6Schema = z.object({
   message: "Valid PAN format required (e.g., ABCDE1234F)", 
   path: ["coApplicantPan"]
 });
-
 // --- Step 7: Documents & E-Signature ---
 export const step7Schema = z.object({
   documentsUploaded: z.boolean().refine((val) => val === true, {
